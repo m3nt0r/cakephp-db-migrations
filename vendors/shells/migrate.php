@@ -92,10 +92,15 @@ class MigrateShell extends Shell
         'text',
         'integer',
         'int',
+        'tinyint',
+        'smallint',
+        'mediumint',
+        'bigint',
         'blob',
         'boolean',
         'bool',
         'float',
+        'decimal',
         'date',
         'time',
         'timestamp',
@@ -122,9 +127,9 @@ class MigrateShell extends Shell
     var $_is_plugin = false;
 
     function startup()
-    {
-        define('MIGRATIONS_PATH', APP_PATH .'config' .DS. 'migrations');
-    
+    {    	
+    	define('MIGRATIONS_PATH', APP_PATH . 'config' . DS . 'migrations'); 	
+    	
         if (preg_match("/\/plugins\/migrations\/vendors\/shells\/migrate\.php$/", $this->Dispatch->shellPath)) {
             $this->_is_plugin = true;
         }
@@ -844,16 +849,37 @@ class MigrateShell extends Shell
                                 continue;
                             }
 
+                       
                             if ($props['type'] == 'datetime') {
                                 $props['type'] = 'timestamp';
                                 $rfields[$field]['type'] = 'timestamp';
                             }
 
-                            if ($props['type'] == 'int') {
-                                $props['type'] = 'integer';
+                            if ($props['type'] == 'tinyint') {
+                                $props['length'] = '1';
                                 $rfields[$field]['type'] = 'integer';
                             }
-
+                            
+                            if ($props['type'] == 'smallint') {
+                                $props['length'] = '2';
+                                $rfields[$field]['type'] = 'integer';
+                            }
+                            
+                            if ($props['type'] == 'mediumint') {
+                                $props['length'] = '3';
+                                $rfields[$field]['type'] = 'integer';
+                            }
+                            
+                            if ($props['type'] == 'int' || $props['type'] == 'integer') {
+                                $props['length'] = '4';
+                                $rfields[$field]['type'] = 'integer';
+                            }                            
+                            
+                            if ($props['type'] == 'bigint') {
+                                $props['length'] = '5';
+                                $rfields[$field]['type'] = 'integer';
+                            }
+                            
                             if ($props['type'] == 'bool') {
                                 $props['type'] = 'boolean';
                                 $rfields[$field]['type'] = 'boolean';
@@ -867,20 +893,23 @@ class MigrateShell extends Shell
                                 $indexes[] = $field.'_id';
                                 continue;
                             }
-
+                            
                             $props['type'] = isset($props['type']) ? $props['type'] : 'string';
-                            $rfields[$field]['type'] = $props['type'];
+                            if (!isset($rfields[$field]['type'])) $rfields[$field]['type'] = $props['type'];
                             if ($props['type'] == 'string') {
                                 $rfields[$field]['type'] = 'text';
                                 if (!isset($props['length'])) $rfields[$field]['length'] = 255;
                             }
-
+                            							
+							if (isset($props['scale'])) $rfields[$field]['scale'] = $props['scale'];
                             if (isset($props['length'])) $rfields[$field]['length'] = $props['length'];
                             if (isset($props['notnull'])) $rfields[$field]['notnull'] = $props['notnull'] ? true : false;
                             if (isset($props['default'])) $rfields[$field]['default'] = $props['default'];
                             if (isset($props['index'])) $indexes[] = $field;
                             if (isset($props['unique'])) $uniques[] = $field;
                             if (isset($props['primary'])) $pk[$field] = '';
+                            
+                            
                         }
 
                         if (!isset($fields['created'])) $fields['created'] = null;
