@@ -128,7 +128,7 @@ class MigrateShell extends Shell
 
     function startup()
     {    	
-    	define('MIGRATIONS_PATH', APP_PATH . 'config' . DS . 'migrations'); 	
+        define('MIGRATIONS_PATH', APP_PATH . 'config' . DS . 'migrations'); 	
     	
         if (preg_match("/\/plugins\/migrations\/vendors\/shells\/migrate\.php$/", $this->Dispatch->shellPath)) {
             $this->_is_plugin = true;
@@ -849,7 +849,6 @@ class MigrateShell extends Shell
                                 continue;
                             }
 
-                       
                             if ($props['type'] == 'datetime') {
                                 $props['type'] = 'timestamp';
                                 $rfields[$field]['type'] = 'timestamp';
@@ -901,8 +900,8 @@ class MigrateShell extends Shell
                                 if (!isset($props['length'])) $rfields[$field]['length'] = 255;
                             }
                             
-							if (isset($props['fixed'])) $rfields[$field]['fixed'] = $props['fixed'];
-							if (isset($props['scale'])) $rfields[$field]['scale'] = $props['scale'];
+                            if (isset($props['fixed'])) $rfields[$field]['fixed'] = $props['fixed'];
+                            if (isset($props['scale'])) $rfields[$field]['scale'] = $props['scale'];
                             if (isset($props['length'])) $rfields[$field]['length'] = $props['length'];
                             if (isset($props['notnull'])) $rfields[$field]['notnull'] = $props['notnull'] ? true : false;
                             if (isset($props['default'])) $rfields[$field]['default'] = $props['default'];
