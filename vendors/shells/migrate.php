@@ -112,6 +112,7 @@ class MigrateShell extends Shell
     var $uuid_format = array(
         'type'    => 'text',
         'notnull' => true,
+        'fixed' => true,
         'length'  => 36
     );
     
