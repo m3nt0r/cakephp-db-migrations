@@ -1032,6 +1032,8 @@ class MigrateShell extends Shell
                                 if (!isset($props['length'])) $rfields[$field]['length'] = 255;
                             }
 
+                            if (isset($props['scale'])) $rfields[$field]['scale'] = $props['scale'];	
+                            if (isset($props['fixed'])) $rfields[$field]['fixed'] = $props['fixed'];
                             if (isset($props['length'])) $rfields[$field]['length'] = $props['length'];
 
                             if (isset($props['notnull'])) $rfields[$field]['notnull'] = $props['notnull'] ? true : false;
@@ -1193,6 +1195,8 @@ class MigrateShell extends Shell
                                 if (!isset($props['length'])) $rfields['length'] = 255;
                             }
 
+                            if (isset($props['scale'])) $rfields['scale'] = $props['scale'];
+                            if (isset($props['fixed'])) $rfields['fixed'] = $props['fixed'];
                             if (isset($props['length'])) $rfields['length'] = $props['length'];
 
                             if (isset($props['notnull'])) $rfields['notnull'] = $props['notnull'] ? true : false;
